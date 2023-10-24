@@ -34,7 +34,16 @@ export default function App() {
             name="categories"
             component={Categories}
           />
-          <Stack.Screen name="meals" component={MealsOverview} />
+          <Stack.Screen
+            name="meals"
+            component={MealsOverview}
+            options={({ route, navigation }) => {
+              const catId = route.params.categoryId;
+              return {
+                title: catId,
+              };
+            }}
+          />
         </Stack.Navigator>
       </NavigationContainer>
       {/* </SafeAreaView> */}

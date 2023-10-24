@@ -1,8 +1,9 @@
+import { useEffect } from "react";
 import { View, StyleSheet, FlatList } from "react-native";
-import { MEALS } from "../data/dummy-data";
+import { MEALS, CATEGORIES } from "../data/dummy-data";
 import MealItem from "../components/mealItem";
 
-const MealsOverview = ({ route }) => {
+const MealsOverview = ({ route, navigation }) => {
   const {
     params: { categoryId },
   } = route;
@@ -23,6 +24,16 @@ const MealsOverview = ({ route }) => {
     };
     return <MealItem {...mealProps} />;
   };
+
+  useEffect(() => {
+    const categoryTitle = CATEGORIES.find(
+      (category) => category.id === categoryId
+    ).title;
+
+    navigation.setOptions({
+      title: categoryTitle,
+    });
+  }, [categoryId, navigation]);
 
   return (
     <View style={styles.container}>
