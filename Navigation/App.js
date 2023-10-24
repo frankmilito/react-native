@@ -1,20 +1,34 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StatusBar } from "expo-status-bar";
+import { StyleSheet, Text, View, SafeAreaView } from "react-native";
+import Categories from "./screens/categories";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import MealsOverview from "./screens/mealsOverview";
 
+const Stack = createNativeStackNavigator();
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <>
+      <StatusBar
+        style="dark"
+        // backgroundColor="transparent"
+        // translucent={true}
+      />
+      <SafeAreaView style={styles.screen}>
+        <NavigationContainer>
+          <Stack.Navigator>
+            <Stack.Screen name="categories" component={Categories} />
+            <Stack.Screen name="meals" component={MealsOverview} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </SafeAreaView>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  screen: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    // paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
   },
 });
