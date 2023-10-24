@@ -10,18 +10,34 @@ export default function App() {
   return (
     <>
       <StatusBar
-        style="dark"
+        style="light"
         // backgroundColor="transparent"
         // translucent={true}
       />
-      <SafeAreaView style={styles.screen}>
-        <NavigationContainer>
-          <Stack.Navigator>
-            <Stack.Screen name="categories" component={Categories} />
-            <Stack.Screen name="meals" component={MealsOverview} />
-          </Stack.Navigator>
-        </NavigationContainer>
-      </SafeAreaView>
+      {/* <SafeAreaView style={styles.screen}> */}
+      <NavigationContainer>
+        <Stack.Navigator
+          screenOptions={{
+            headerStyle: {
+              backgroundColor: "#351401",
+            },
+            headerTintColor: "white",
+            contentStyle: {
+              backgroundColor: "#3f3f35",
+            },
+          }}
+        >
+          <Stack.Screen
+            options={{
+              title: "All Categories",
+            }}
+            name="categories"
+            component={Categories}
+          />
+          <Stack.Screen name="meals" component={MealsOverview} />
+        </Stack.Navigator>
+      </NavigationContainer>
+      {/* </SafeAreaView> */}
     </>
   );
 }
