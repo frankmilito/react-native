@@ -16,6 +16,7 @@ const MealsOverview = ({ route, navigation }) => {
     const { item } = itemData;
 
     const mealProps = {
+      id: item.id,
       title: item.title,
       imageUrl: item.imageUrl,
       affordability: item.affordability,
