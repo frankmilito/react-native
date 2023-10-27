@@ -8,6 +8,9 @@ import MealDetails from "./screens/mealDetails";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import Favourites from "./screens/favourites";
 import { Ionicons } from "@expo/vector-icons";
+import FavoriteContextProvider from "./store/context/favourites";
+import { Provider } from "react-redux";
+import { store } from "./store/redux/store";
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
 
@@ -62,39 +65,43 @@ export default function App() {
         // translucent={true}
       />
       {/* <SafeAreaView style={styles.screen}> */}
-      <NavigationContainer>
-        <Stack.Navigator
-          screenOptions={{
-            headerStyle: {
-              backgroundColor: "#351401",
-            },
-            headerTintColor: "white",
-            contentStyle: {
-              backgroundColor: "#3f3f35",
-            },
-          }}
-        >
-          <Stack.Screen
-            options={{
-              headerShown: false,
+      {/* <FavoriteContextProvider> */}
+      <Provider store={store}>
+        <NavigationContainer>
+          <Stack.Navigator
+            screenOptions={{
+              headerStyle: {
+                backgroundColor: "#351401",
+              },
+              headerTintColor: "white",
+              contentStyle: {
+                backgroundColor: "#3f3f35",
+              },
             }}
-            name="Allcategories"
-            component={DrawerNavigation}
-          />
-          <Stack.Screen name="meals" component={MealsOverview} />
-          <Stack.Screen
-            name="mealsDetails"
-            component={MealDetails}
-            options={{ title: "About the meal" }}
+          >
+            <Stack.Screen
+              options={{
+                headerShown: false,
+              }}
+              name="Allcategories"
+              component={DrawerNavigation}
+            />
+            <Stack.Screen name="meals" component={MealsOverview} />
+            <Stack.Screen
+              name="mealsDetails"
+              component={MealDetails}
+              options={{ title: "About the meal" }}
 
-            // options={{
-            //   headerRight: () => {
-            //     return <Text>Icon header</Text>;
-            //   },
-            // }}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
+              // options={{
+              //   headerRight: () => {
+              //     return <Text>Icon header</Text>;
+              //   },
+              // }}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </Provider>
+      {/* </FavoriteContextProvider> */}
       {/* </SafeAreaView> */}
     </>
   );
