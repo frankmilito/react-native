@@ -3,8 +3,15 @@ import { StyleSheet, Text, View } from "react-native";
 import IconButton from "../components/ui/IconButton";
 import { GlobalStyles } from "../utils/styles";
 import Button from "../components/ui/Button";
+import { useContext } from "react";
+import { ExpenseContext } from "../store/expensesContext";
 
 const ManageExpenses = ({ route, navigation }) => {
+  const {
+    addExpense,
+    deleteExpense: deleteExpenses,
+    updateExpense,
+  } = useContext(ExpenseContext);
   const expenseId = route.params?.expenseId;
   const isEditing = !!expenseId;
 
@@ -14,15 +21,32 @@ const ManageExpenses = ({ route, navigation }) => {
     });
   }, [expenseId, navigation]);
 
-  const deleteExpense = (expenseId) => {
+  const deleteExpense = () => {
+    deleteExpenses(expenseId);
     navigation.goBack();
   };
+
+  const confirmhandler = (expenseId) => {
+    if (isEditing) {
+      updateExpense(route.params.expenseId, {
+        title: "Updated",
+        amount: 421.0,
+        date: "2017-09-92",
+      });
+    } else {
+      addExpense({
+        title: "Testing this",
+        amount: 40.99,
+        date: "2018-09-9",
+      });
+    }
+    navigation.goBack();
+  };
+
   const cancelHandler = (expenseId) => {
     navigation.goBack();
   };
-  const confirmhandler = (expenseId) => {
-    navigation.goBack();
-  };
+
   return (
     <View style={styles.container}>
       <View style={styles.buttons}>

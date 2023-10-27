@@ -9,10 +9,10 @@ import { ExpenseContext } from "../store/expensesContext";
 function Recent() {
   const expenseCtx = useContext(ExpenseContext);
   const recentExpenses = expenseCtx.expenses.slice(0, 5);
-  console.log(recentExpenses);
+  // console.log(recentExpenses);
   return (
     <Container>
-      <ExpenseSummary />
+      <ExpenseSummary period="Last 7 days" expenses={recentExpenses} />
       <ExpenseList expenses={recentExpenses} />
     </Container>
   );
