@@ -1,10 +1,17 @@
 import { View, Text, StyleSheet } from "react-native";
 import ExpensesOutput from "../components/expensesOutput/expensesOutput";
+import { useContext } from "react";
+import { ExpenseContext } from "../store/expensesContext";
 
 function Expenses() {
+  const expensesCtx = useContext(ExpenseContext);
   return (
     <View style={styles.rootContainer}>
-      <ExpensesOutput expensesPeriod={"Last 7 days"} />
+      <ExpensesOutput
+        fallbackText={"No expenses to display"}
+        expensesPeriod={"Total"}
+        expenses={expensesCtx.expenses}
+      />
     </View>
   );
 }

@@ -1,15 +1,17 @@
 import { StyleSheet } from "react-native";
-import Container from "../components/Container";
-
-import ExpenseSummary from "../components/expensesOutput/ExpenseSummary";
-import ExpenseList from "../components/expensesOutput/ExpenseList";
+import { useContext } from "react";
+import { ExpenseContext } from "../store/expensesContext";
+import ExpensesOutput from "../components/expensesOutput/expensesOutput";
 
 function Recent() {
+  const expenseCtx = useContext(ExpenseContext);
+  const recentExpenses = expenseCtx.expenses.slice(0, 5);
   return (
-    <Container>
-      <ExpenseSummary />
-      <ExpenseList />
-    </Container>
+    <ExpensesOutput
+      expensesPeriod={"7 days"}
+      fallbackText={"No expenses in past 7 days"}
+      expenses={recentExpenses}
+    />
   );
 }
 
