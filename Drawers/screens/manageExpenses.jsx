@@ -13,9 +13,12 @@ import {
 } from "../utils/http";
 import { useState } from "react";
 import Loading from "../components/ui/Loading";
+import ErrorOverlay from "../components/ui/Error";
 
 const ManageExpenses = ({ route, navigation }) => {
   const [isFetching, setIsFetching] = useState(false);
+  const [error, setError] = useState("");
+
   const {
     addExpense,
     deleteExpense: deleteExpenses,
@@ -34,32 +37,48 @@ const ManageExpenses = ({ route, navigation }) => {
   }, [expenseId, navigation]);
 
   const deleteExpense = async () => {
-    setIsFetching(true);
-    deleteExpenses(expenseId);
-    await deleteExpenseStore(expenseId);
+    try {
+      setIsFetching(true);
+      deleteExpenses(expenseId);
+      await deleteExpenseStore(expenseId);
+    } catch (error) {
+      setError("Could not delete expense");
+    }
     // setIsFetching(false);
     navigation.goBack();
   };
 
   const confirmhandler = async (expenseData) => {
     setIsFetching(true);
-    if (isEditing) {
-      updateExpense(route.params.expenseId, expenseData);
-      await updateExpenseStore(route.params.expenseId, expenseData);
-    } else {
-      const id = await storeExpense(expenseData);
-      addExpense({ ...expenseData, id });
+    try {
+      if (isEditing) {
+        updateExpense(route.params.expenseId, expenseData);
+        await updateExpenseStore(route.params.expenseId, expenseData);
+      } else {
+        const id = await storeExpense(expenseData);
+        addExpense({ ...expenseData, id });
+      }
+      navigation.goBack();
+    } catch (error) {
+      setError("Could not save expense please try again");
+      setIsFetching(false);
     }
-    // setIsFetching(false);
-    navigation.goBack();
   };
 
   const cancelHandler = (expenseId) => {
     navigation.goBack();
   };
+
+  const errorHandler = () => setError(null);
+
+  if (error && !isFetching) {
+    return <ErrorOverlay message={error} onConfirm={errorHandler} />;
+  }
+
   if (isFetching) {
     return <Loading />;
   }
+
   return (
     <View style={styles.container}>
       <ExpenseForm
