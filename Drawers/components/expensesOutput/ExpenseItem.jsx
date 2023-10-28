@@ -4,7 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 
 const ExpenseItem = ({ item }) => {
   const navigation = useNavigation();
-  const { title, date, amount, id } = item;
+  const { description, date, amount, id } = item;
   const expenseHandler = () => {
     navigation.navigate("manageExpense", {
       expenseId: id,
@@ -18,7 +18,7 @@ const ExpenseItem = ({ item }) => {
     >
       <View style={styles.rootContainer}>
         <View>
-          <Text style={[styles.title, styles.description]}>{title}</Text>
+          <Text style={[styles.title, styles.description]}>{description}</Text>
           <Text style={styles.title}>{date}</Text>
         </View>
         <View style={styles.box}>

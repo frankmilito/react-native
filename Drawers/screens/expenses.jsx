@@ -5,11 +5,11 @@ import { ExpenseContext } from "../store/expensesContext";
 
 function Expenses() {
   const expensesCtx = useContext(ExpenseContext);
-  console.log(expensesCtx, "hello");
   return (
     <View style={styles.rootContainer}>
       <ExpensesOutput
-        expensesPeriod={"Last 7 days"}
+        fallbackText={"No expenses to display"}
+        expensesPeriod={"Total"}
         expenses={expensesCtx.expenses}
       />
     </View>

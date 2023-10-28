@@ -5,15 +5,19 @@ import { GlobalStyles } from "../utils/styles";
 import Button from "../components/ui/Button";
 import { useContext } from "react";
 import { ExpenseContext } from "../store/expensesContext";
+import ExpenseForm from "../components/manageExpense/ExpenseForm";
 
 const ManageExpenses = ({ route, navigation }) => {
   const {
     addExpense,
     deleteExpense: deleteExpenses,
     updateExpense,
+    expenses,
   } = useContext(ExpenseContext);
   const expenseId = route.params?.expenseId;
   const isEditing = !!expenseId;
+
+  const selectedExpense = expenses.find((expense) => expense.id === expenseId);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -26,19 +30,11 @@ const ManageExpenses = ({ route, navigation }) => {
     navigation.goBack();
   };
 
-  const confirmhandler = (expenseId) => {
+  const confirmhandler = (expenseData) => {
     if (isEditing) {
-      updateExpense(route.params.expenseId, {
-        title: "Updated",
-        amount: 421.0,
-        date: "2017-09-92",
-      });
+      updateExpense(route.params.expenseId, expenseData);
     } else {
-      addExpense({
-        title: "Testing this",
-        amount: 40.99,
-        date: "2018-09-9",
-      });
+      addExpense(expenseData);
     }
     navigation.goBack();
   };
@@ -49,14 +45,14 @@ const ManageExpenses = ({ route, navigation }) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.buttons}>
-        <Button style={styles.button} mode={"flat"} onPress={cancelHandler}>
-          Cancel
-        </Button>
-        <Button style={styles.button} onPress={confirmhandler}>
-          {isEditing ? "Update" : "Add"}
-        </Button>
-      </View>
+      <ExpenseForm
+        isEditing={isEditing}
+        cancelHandler={cancelHandler}
+        onSubmit={confirmhandler}
+        submitButtonLabel={isEditing ? "Update" : "Add"}
+        selectedExpense={selectedExpense}
+      />
+
       {isEditing && (
         <View style={styles.deleteContainer}>
           <IconButton
@@ -67,7 +63,6 @@ const ManageExpenses = ({ route, navigation }) => {
           />
         </View>
       )}
-      <Text>h</Text>
     </View>
   );
 };
@@ -86,14 +81,5 @@ const styles = StyleSheet.create({
     borderTopWidth: 2,
     borderTopColor: GlobalStyles.colors.primary200,
     alignItems: "center",
-  },
-  buttons: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  button: {
-    marginHorizontal: 8,
-    minWidth: 120,
   },
 });
