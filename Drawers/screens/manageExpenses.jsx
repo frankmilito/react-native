@@ -6,6 +6,11 @@ import Button from "../components/ui/Button";
 import { useContext } from "react";
 import { ExpenseContext } from "../store/expensesContext";
 import ExpenseForm from "../components/manageExpense/ExpenseForm";
+import {
+  storeExpense,
+  updateExpenseStore,
+  deleteExpenseStore,
+} from "../utils/http";
 
 const ManageExpenses = ({ route, navigation }) => {
   const {
@@ -25,16 +30,19 @@ const ManageExpenses = ({ route, navigation }) => {
     });
   }, [expenseId, navigation]);
 
-  const deleteExpense = () => {
+  const deleteExpense = async () => {
     deleteExpenses(expenseId);
+    await deleteExpenseStore(expenseId);
     navigation.goBack();
   };
 
-  const confirmhandler = (expenseData) => {
+  const confirmhandler = async (expenseData) => {
     if (isEditing) {
       updateExpense(route.params.expenseId, expenseData);
+      await updateExpenseStore(route.params.expenseId, expenseData);
     } else {
-      addExpense(expenseData);
+      const id = await storeExpense(expenseData);
+      addExpense({ ...expenseData, id });
     }
     navigation.goBack();
   };

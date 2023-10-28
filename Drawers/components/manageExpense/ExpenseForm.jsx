@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "white",
     textAlign: "center",
-    marginVerticalAlignment: 24,
+    marginVertical: 24,
   },
   inputRow: {
     flexDirection: "row",
