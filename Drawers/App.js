@@ -72,7 +72,7 @@ export default function App() {
             initialRouteName="expenseOverview"
             screenOptions={{
               headerStyle: {
-                backgroundColor: GlobalStyles.colors.primary500,
+                // backgroundColor:' GlobalStyles.colors.primary500',
                 headerTintColor: "white",
               },
             }}

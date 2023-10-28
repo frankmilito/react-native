@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseURL = "https://react-native-fd77a-default-rtdb.firebaseio.com";
+const baseURL = "https://react-native-fd77a-default-rtdb.firebaseiocom";
 
 export const storeExpense = async (expenseData) => {
   const res = await axios.post(`${baseURL}/expenses.json`, expenseData);
@@ -10,23 +10,19 @@ export const storeExpense = async (expenseData) => {
 };
 
 export const fetchExpense = async () => {
-  try {
-    const res = await axios.get(`${baseURL}/expenses.json`);
-    const expenses = [];
-    for (const key in res.data) {
-      const expObj = {
-        id: key,
-        amount: res.data[key].amount,
-        description: res.data[key].description,
-        date: res.data[key].date,
-      };
+  const res = await axios.get(`${baseURL}/expenses.json`);
+  const expenses = [];
+  for (const key in res.data) {
+    const expObj = {
+      id: key,
+      amount: res.data[key].amount,
+      description: res.data[key].description,
+      date: res.data[key].date,
+    };
 
-      expenses.push(expObj);
-    }
-    return expenses;
-  } catch (error) {
-    console.log(error, "error");
+    expenses.push(expObj);
   }
+  return expenses;
 };
 
 export const updateExpenseStore = (id, expenseData) => {

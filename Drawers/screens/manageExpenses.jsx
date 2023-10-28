@@ -11,8 +11,11 @@ import {
   updateExpenseStore,
   deleteExpenseStore,
 } from "../utils/http";
+import { useState } from "react";
+import Loading from "../components/ui/Loading";
 
 const ManageExpenses = ({ route, navigation }) => {
+  const [isFetching, setIsFetching] = useState(false);
   const {
     addExpense,
     deleteExpense: deleteExpenses,
@@ -22,7 +25,7 @@ const ManageExpenses = ({ route, navigation }) => {
   const expenseId = route.params?.expenseId;
   const isEditing = !!expenseId;
 
-  const selectedExpense = expenses.find((expense) => expense.id === expenseId);
+  const selectedExpense = expenses?.find((expense) => expense.id === expenseId);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -31,12 +34,15 @@ const ManageExpenses = ({ route, navigation }) => {
   }, [expenseId, navigation]);
 
   const deleteExpense = async () => {
+    setIsFetching(true);
     deleteExpenses(expenseId);
     await deleteExpenseStore(expenseId);
+    // setIsFetching(false);
     navigation.goBack();
   };
 
   const confirmhandler = async (expenseData) => {
+    setIsFetching(true);
     if (isEditing) {
       updateExpense(route.params.expenseId, expenseData);
       await updateExpenseStore(route.params.expenseId, expenseData);
@@ -44,13 +50,16 @@ const ManageExpenses = ({ route, navigation }) => {
       const id = await storeExpense(expenseData);
       addExpense({ ...expenseData, id });
     }
+    // setIsFetching(false);
     navigation.goBack();
   };
 
   const cancelHandler = (expenseId) => {
     navigation.goBack();
   };
-
+  if (isFetching) {
+    return <Loading />;
+  }
   return (
     <View style={styles.container}>
       <ExpenseForm

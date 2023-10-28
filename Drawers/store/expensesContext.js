@@ -64,7 +64,7 @@ const expensesReducer = (state, action) => {
     case "ADD":
       return [action.payload, ...state];
     case "SET":
-      return action.payload.reverse();
+      return action?.payload?.reverse();
     case "UPDATE":
       const updateIndex = state.findIndex(
         (item) => item.id === action.payload.id
