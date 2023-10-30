@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Alert, Button, Image, StyleSheet, Text, View } from "react-native";
 import {
   launchCameraAsync,
@@ -7,10 +7,13 @@ import {
 } from "expo-image-picker";
 import { Colors } from "../../constants/colors";
 import OutlinedButton from "../ui/OutlinedButton";
+import { MapContext } from "../../store/context";
 
 const ImagePicker = () => {
+  const mapCtx = useContext(MapContext);
   const [cameraPermissionInfo, requestPermission] = useCameraPermissions();
   const [pickedImage, setPickedImage] = useState();
+
   const verifyPermission = async () => {
     if (cameraPermissionInfo.status === PermissionStatus.UNDETERMINED) {
       const permissionResponse = await requestPermission();
@@ -39,6 +42,7 @@ const ImagePicker = () => {
     });
 
     setPickedImage(image.assets[0].uri);
+    mapCtx.selectedImageHandler(image.assets[0].uri);
   };
   let imagePreview = <Text>No image taken yet...</Text>;
   if (pickedImage) {

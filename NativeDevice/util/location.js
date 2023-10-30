@@ -6,3 +6,12 @@ export const getMapPreview = (lng, lat) => {
 
   return imagePreviewUrl;
 };
+
+export const getAddress = async (coord) => {
+  const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${coord.lat},${coord.lng}&key=${GOOGLE_API_KEY}`;
+
+  const res = await fetch(url);
+  const data = await res.json();
+  const address = data.results[0].formatted_address;
+  return address;
+};

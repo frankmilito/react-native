@@ -1,13 +1,32 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 import { Colors } from "../../constants/colors";
 import ImagePicker from "./ImagePicker";
 import Location from "./Location";
+import Button from "../ui/Button";
+import { MapContext } from "../../store/context";
+import { useNavigation } from "@react-navigation/native";
+import Place from "../../models/place";
 
 const PlaceForm = () => {
+  const navigation = useNavigation();
+  const mapCtx = useContext(MapContext);
+
   const [enteredTitle, setEnteredTitle] = useState("");
   const changeTitleHandler = (value) => {
     setEnteredTitle(value);
+  };
+
+  const savePlaceHandler = () => {
+    const place = new Place(
+      enteredTitle,
+      mapCtx.selectedImageStore,
+      mapCtx.addressStore,
+      mapCtx.locationStore
+    );
+    navigation.navigate("AllPlaces", {
+      place,
+    });
   };
   return (
     <ScrollView style={styles.form}>
@@ -21,6 +40,7 @@ const PlaceForm = () => {
       </View>
       <ImagePicker />
       <Location />
+      <Button onPress={savePlaceHandler}>Add Place</Button>
     </ScrollView>
   );
 };

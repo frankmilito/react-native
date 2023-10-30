@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { View, StyleSheet, Alert, Image, Text } from "react-native";
 import OutlinedButton from "../ui/OutlinedButton";
 import { Colors } from "../../constants/colors";
@@ -7,13 +7,21 @@ import {
   useForegroundPermissions,
   PermissionStatus,
 } from "expo-location";
-import { getMapPreview } from "../../util/location";
-import { useNavigation } from "@react-navigation/native";
+import { getAddress, getMapPreview } from "../../util/location";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { MapContext } from "../../store/context";
 
 const Location = () => {
+  const mapCtx = useContext(MapContext);
+  const route = useRoute();
   const navigation = useNavigation();
   const [locationPermission, requestPermissions] = useForegroundPermissions();
   const [pickedLocation, setPickedLocation] = useState();
+  const mapLocation = route.params?.pickedLocation;
+
+  useEffect(() => {
+    setPickedLocation(mapLocation);
+  }, [route]);
   const verifyPermissions = async () => {
     if (locationPermission.status === PermissionStatus.UNDETERMINED) {
       const permissionResponse = await requestPermissions();
@@ -39,10 +47,26 @@ const Location = () => {
       lat: location.coords.latitude,
       lng: location.coords.longitude,
     });
-    console.log(location, "location");
+    mapCtx.addLocation({
+      lat: location.coords.latitude,
+      lng: location.coords.longitude,
+    });
+
+    const address = await getAddress({
+      lat: location.coords.latitude,
+      lng: location.coords.longitude,
+    });
+    mapCtx.addressHandler(address);
   };
 
-  const pickOnMapHandler = () => {
+  const pickOnMapHandler = async () => {
+    const location = await getCurrentPositionAsync();
+
+    const address = await getAddress({
+      lat: location.coords.latitude,
+      lng: location.coords.longitude,
+    });
+    mapCtx.addressHandler(address);
     navigation.navigate("Map");
   };
 
