@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Alert, Button, Image, StyleSheet, Text, View } from "react-native";
 import {
   launchCameraAsync,
@@ -7,10 +7,13 @@ import {
 } from "expo-image-picker";
 import { Colors } from "../../constants/colors";
 import OutlinedButton from "../ui/OutlinedButton";
+import { MapContext } from "../../store/context";
 
 const ImagePicker = () => {
+  const mapCtx = useContext(MapContext);
   const [cameraPermissionInfo, requestPermission] = useCameraPermissions();
   const [pickedImage, setPickedImage] = useState();
+
   const verifyPermission = async () => {
     if (cameraPermissionInfo.status === PermissionStatus.UNDETERMINED) {
       const permissionResponse = await requestPermission();
@@ -39,17 +42,15 @@ const ImagePicker = () => {
     });
 
     setPickedImage(image.assets[0].uri);
+    mapCtx.selectedImageHandler(image.assets[0].uri);
   };
-  let imagePreview = (
-    <Text style={styles.imageText}>No image taken yet...</Text>
-  );
+  let imagePreview = <Text>No image taken yet...</Text>;
   if (pickedImage) {
     imagePreview = <Image source={{ uri: pickedImage }} style={styles.image} />;
   }
   return (
     <View>
       <View style={styles.imageContainer}>{imagePreview}</View>
-      {/* <Button title="Take image" onPress={onHandlePress} /> */}
       <OutlinedButton icon="camera" onPress={onHandlePress}>
         Take Image
       </OutlinedButton>
@@ -60,10 +61,6 @@ const ImagePicker = () => {
 export default ImagePicker;
 
 const styles = StyleSheet.create({
-  imageText: {
-    color: "white",
-    textAlign: "center",
-  },
   imageContainer: {
     width: "100%",
     height: 200,
@@ -76,5 +73,6 @@ const styles = StyleSheet.create({
   image: {
     width: "100%",
     height: "100%",
+    borderRadius: 4,
   },
 });
