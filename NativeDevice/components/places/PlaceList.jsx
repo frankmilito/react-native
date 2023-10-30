@@ -19,6 +19,7 @@ const PlaceList = ({ places }) => {
       data={places}
       keyExtractor={(item) => item.id}
       renderItem={renderData}
+      style={styles.list}
     />
   );
 };
@@ -26,6 +27,9 @@ const PlaceList = ({ places }) => {
 export default PlaceList;
 
 const styles = StyleSheet.create({
+  list: {
+    margin: 24,
+  },
   fallbackContainer: {
     flex: 1,
     justifyContent: "center",

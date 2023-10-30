@@ -7,6 +7,7 @@ import Button from "../ui/Button";
 import { MapContext } from "../../store/context";
 import { useNavigation } from "@react-navigation/native";
 import Place from "../../models/place";
+import { insertPlace } from "../../util/database";
 
 const PlaceForm = () => {
   const navigation = useNavigation();
@@ -17,16 +18,29 @@ const PlaceForm = () => {
     setEnteredTitle(value);
   };
 
-  const savePlaceHandler = () => {
+  const savePlaceHandler = async () => {
     const place = new Place(
       enteredTitle,
       mapCtx.selectedImageStore,
       mapCtx.addressStore,
       mapCtx.locationStore
     );
-    navigation.navigate("AllPlaces", {
-      place,
+    // console.log({
+    //   imageURI: place.imageURI,
+    //   title: place.title,
+    //   address: place.address,
+    //   lat: place.location.lat,
+    //   lng: place.location.lng,
+    // });
+    console.log(place);
+    await insertPlace({
+      imageURI: place.imageURI,
+      title: place.title,
+      address: place.address,
+      lat: place.location.lat,
+      lng: place.location.lng,
     });
+    navigation.navigate("AllPlaces");
   };
   return (
     <ScrollView style={styles.form}>

@@ -7,14 +7,41 @@ import IconButton from "./components/ui/IconButton";
 import { Colors } from "./constants/colors";
 import Map from "./screens/Map";
 import MapProvider from "./store/context";
-
+import { useCallback, useEffect, useState } from "react";
+import { init } from "./util/database";
+import * as SplashScreen from "expo-splash-screen";
 const Stack = createNativeStackNavigator();
 export default function App() {
+  const [dbInitialized, setDbInitialized] = useState(false);
+
+  // code from Expo using SplashScreen:
+  useEffect(() => {
+    const prepare = async () => {
+      try {
+        await SplashScreen.preventAutoHideAsync();
+        init();
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        setDbInitialized(true);
+      }
+    };
+    prepare();
+  }, []);
+
+  const onLayoutRootView = useCallback(async () => {
+    if (dbInitialized) {
+      await SplashScreen.hideAsync();
+    }
+  }, [dbInitialized]);
+
+  if (!dbInitialized) return null;
+
   return (
     <>
       <StatusBar style="dark" />
       <MapProvider>
-        <NavigationContainer>
+        <NavigationContainer onReady={onLayoutRootView}>
           <Stack.Navigator
             screenOptions={{
               headerStyle: {
