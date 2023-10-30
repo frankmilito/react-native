@@ -10,6 +10,7 @@ import MapProvider from "./store/context";
 import { useCallback, useEffect, useState } from "react";
 import { init } from "./util/database";
 import * as SplashScreen from "expo-splash-screen";
+import PlacesDetails from "./screens/PlacesDetails";
 const Stack = createNativeStackNavigator();
 export default function App() {
   const [dbInitialized, setDbInitialized] = useState(false);
@@ -80,6 +81,13 @@ export default function App() {
             <Stack.Screen
               name="Map"
               component={Map}
+              // options={{
+              //   title: "Add a new place",
+              // }}
+            />
+            <Stack.Screen
+              name="placeDetails"
+              component={PlacesDetails}
               // options={{
               //   title: "Add a new place",
               // }}
