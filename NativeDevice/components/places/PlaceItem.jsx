@@ -9,7 +9,7 @@ const PlaceItem = ({ place, onSelect }) => {
     >
       <Image
         source={{
-          uri: place.imageUri,
+          uri: place.imageURI || place.imageUri,
         }}
         style={styles.image}
       />

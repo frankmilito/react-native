@@ -7,30 +7,42 @@ import { fetchPlaceDetail } from "../util/database";
 const PlacesDetails = ({ route, navigation }) => {
   const placeID = route.params.placeId;
   const [placeDetails, setPlaceDetails] = useState();
+
   useEffect(() => {
     async function fetchDetail(placeID) {
       const place = await fetchPlaceDetail(placeID);
       setPlaceDetails(place);
-      navigation.setOptions({
-        title: placeDetails?.title,
-      });
     }
     fetchDetail(placeID);
-  }, [placeID, placeDetails]);
+  }, [placeID]);
 
-  function showOnMapHandler() {}
+  useEffect(() => {
+    navigation.setOptions({
+      title: placeDetails?.title,
+    });
+  }, [placeDetails]);
+
+  function showOnMapHandler() {
+    navigation.navigate("Map", {
+      initialLat: placeDetails.lat,
+      initialLng: placeDetails.lng,
+    });
+  }
 
   if (!placeDetails) {
     return (
       <View style={styles.fallback}>
-        <Text>Loading place details...</Text>;
+        <Text>Loading place details...</Text>
       </View>
     );
   }
 
   return (
     <ScrollView>
-      <Image style={styles.image} source={{ uri: placeDetails?.imageUri }} />
+      <Image
+        style={styles.image}
+        source={{ uri: placeDetails?.imageURI || placeDetails.imageUri }}
+      />
       <View style={styles.locationContainer}>
         <View style={styles.addressContainer}>
           <Text style={styles.address}>{placeDetails?.address}</Text>

@@ -58,7 +58,7 @@ export const fetchPlaces = () => {
           for (const dp of result.rows._array) {
             places.push(dp);
           }
-          resolve(places);
+          resolve(places?.reverse());
         },
         (_, error) => {
           reject(error);
