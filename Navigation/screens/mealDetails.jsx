@@ -12,7 +12,7 @@ import { addFavorites, removeFavorites } from "../store/redux/favorites";
 const MealDetails = ({ route, navigation }) => {
   const dispatch = useDispatch();
   const { ids } = useSelector((state) => state.favorites);
-  console.log(ids);
+
   // const { ids, addFavorite, removeFavorite } = useContext(FavoriteContext);
 
   const {
