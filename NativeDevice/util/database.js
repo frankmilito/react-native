@@ -58,7 +58,27 @@ export const fetchPlaces = () => {
           for (const dp of result.rows._array) {
             places.push(dp);
           }
-          resolve(places);
+          resolve(places?.reverse());
+        },
+        (_, error) => {
+          reject(error);
+        }
+      );
+    });
+  });
+
+  return promise;
+};
+export const fetchPlaceDetail = (id) => {
+  const promise = new Promise((resolve, reject) => {
+    database.transaction((tx) => {
+      tx.executeSql(
+        "SELECT * FROM places WHERE id = ?",
+        [id],
+        (_, result) => {
+          const place = result.rows._array[0];
+
+          resolve(place);
         },
         (_, error) => {
           reject(error);

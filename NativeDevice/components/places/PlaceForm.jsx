@@ -25,14 +25,7 @@ const PlaceForm = () => {
       mapCtx.addressStore,
       mapCtx.locationStore
     );
-    // console.log({
-    //   imageURI: place.imageURI,
-    //   title: place.title,
-    //   address: place.address,
-    //   lat: place.location.lat,
-    //   lng: place.location.lng,
-    // });
-    console.log(place);
+
     await insertPlace({
       imageURI: place.imageURI,
       title: place.title,
