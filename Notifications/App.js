@@ -1,8 +1,8 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, Button } from "react-native";
+import { StyleSheet, Text, View, Button, Platform } from "react-native";
 import * as Notifications from "expo-notifications";
 import { useEffect } from "react";
-
+import Constants from "expo-constants";
 Notifications.setNotificationHandler({
   handleNotification: async () => {
     return {
@@ -33,7 +33,18 @@ export default function App() {
 
       if (hasPermissions) {
         try {
-          const pushTokenData = await Notifications.getExpoPushTokenAsync();
+          const pushTokenData = await Notifications.getExpoPushTokenAsync({
+            projectId: Constants.expoConfig.extra.eas.projectId,
+          });
+
+          if (Platform.OS === "android") {
+            Notifications.setNotificationChannelAsync("default", {
+              name: "default",
+              importance: Notifications.AndroidImportance.MAX,
+              vibrationPattern: [0, 250, 250, 250],
+              lightColor: "#FF231F7C",
+            });
+          }
           console.log(pushTokenData);
         } catch (error) {
           console.log(error, "error");
@@ -79,11 +90,32 @@ export default function App() {
       });
     }
   };
+
+  async function sendPushNotification() {
+    const message = {
+      to: "ExponentPushToken[C9VrHkIOJM9CYtoH8bh-rS]",
+      sound: "default",
+      title: "Milii here again",
+      body: "And here is the what i have to say!",
+      data: { someData: "goes here" },
+    };
+
+    await fetch("https://exp.host/--/api/v2/push/send", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Accept-encoding": "gzip, deflate",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(message),
+    });
+  }
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
       <Text>Open up App.js to start working on your app!</Text>
       <Button title="Schedule Notification" onPress={scheduleNotification} />
+      <Button title="Send Push Notification" onPress={sendPushNotification} />
     </View>
   );
 }

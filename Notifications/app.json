@@ -11,13 +11,17 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "config": {
         "usesNonExemptEncryption": false,
         "infoPlist": {
-          "UIBackgroundModes": ["remote-notification"],
+          "UIBackgroundModes": [
+            "remote-notification"
+          ],
           "NSAppTransportSecurity": {
             "NSAllowsArbitraryLoads": true,
             "NSAllowsArbitraryLoadsForMedia": true
@@ -34,7 +38,6 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-
     "plugins": [
       [
         "expo-notifications",
@@ -43,6 +46,11 @@
           "color": "#ffffff"
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "34a7bff5-b4d9-4179-b241-8e4d3c94094e"
+      }
+    }
   }
 }
