@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     height: 360,
     borderRadius: 6,
     marginVertical: 12,
-    marginHorizontal: 16,
+    marginHorizontal: 12,
   },
   cardElevated: {
     backgroundColor: '#000',
