@@ -8,7 +8,9 @@ import ActionCards from './components/ActionCards';
 const App = () => {
   return (
     <SafeAreaView>
-      <ScrollView>
+      <ScrollView
+        showsHorizontalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}>
         <FlatCard />
         <ElevatedCard />
         <FancyCards />
