@@ -3,7 +3,7 @@ import React from 'react';
 
 const FlatCard = () => {
   return (
-    <View>
+    <View style={{marginBottom: 20}}>
       <Text style={styles.headerText}>FlatCard</Text>
       <View style={styles.boxContainer}>
         <View style={[styles.card, styles.cardOne]}>
@@ -11,9 +11,6 @@ const FlatCard = () => {
         </View>
         <View style={[styles.card, styles.cardTwo]}>
           <Text>Blue</Text>
-        </View>
-        <View style={[styles.card, styles.cardThree]}>
-          <Text>Green</Text>
         </View>
         <View style={[styles.card, styles.cardThree]}>
           <Text>Green</Text>
